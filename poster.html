@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<title>Wedding Poster</title>
+<!--
+  微信分享海报（1080×1920）。不链接到主站，只用来生成 wedding-poster.png。
+  网站上线后，把网址填到下面的 SITE_URL，再用浏览器打开本页截图（或让 Claude 重新生成）。
+-->
+<script>const SITE_URL = "";</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  @font-face { font-family: "InviteFont"; src: url("assets/font-1.ttf"); }
+  @font-face { font-family: "InviteFont2"; src: url("assets/font-2.ttf"); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #fff; }
+  .poster {
+    position: relative; width: 1080px; height: 1920px; overflow: hidden;
+    background: linear-gradient(#fff 0, #fff 62%, #fdf1e7 100%);
+    font-family: "InviteFont", "InviteFont2", "PingFang SC", "Microsoft YaHei", sans-serif; color: #222;
+  }
+  .poster img { position: absolute; display: block; }
+  .cover { left: 140px; top: 30px; width: 800px; }
+  .banner { left: 245px; top: 1175px; width: 590px; }
+  .names { position: absolute; top: 1420px; width: 100%; text-align: center; font-size: 60px; letter-spacing: .04em; }
+  .info {
+    position: absolute; top: 1510px; width: 100%; text-align: center; font-size: 30px; line-height: 1.6; color: #444;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  .qr-wrap {
+    position: absolute; left: 50%; top: 1630px; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 34px;
+  }
+  .qr {
+    width: 220px; height: 220px; padding: 14px; background: #fff;
+    border: 3px solid #b2d0ee; border-radius: 22px;
+  }
+  .qr img, .qr canvas { position: static !important; width: 186px !important; height: 186px !important; }
+  .qr.placeholder {
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    color: #9aaabb; font: 22px/1.4 "PingFang SC", "Microsoft YaHei", sans-serif; background: #f3f8fd;
+  }
+  .hint { font: 34px/1.5 "PingFang SC", "Microsoft YaHei", sans-serif; color: #333; }
+  .hint small { display: block; font-size: 24px; color: #888; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="poster">
+  <img class="cover" src="assets/7388899181804404885a6087d965ca17.png" alt="">
+  <img class="banner" src="assets/9b17385b86744473a8294b3d8a3d8a59.png" alt="">
+  <div class="names">Winston &amp; Serena</div>
+  <div class="info">2026年12月12日 星期六 17:00<br>2200 E Holt Blvd, Ontario, CA 91761</div>
+  <div class="qr-wrap">
+    <div class="qr" id="qr"></div>
+    <div class="hint">长按识别二维码<br>查看请柬<small>Scan to view the invitation</small></div>
+  </div>
+</div>
+<script>
+  const box = document.getElementById("qr");
+  if (SITE_URL && window.QRCode) {
+    new QRCode(box, { text: SITE_URL, width: 372, height: 372, colorDark: "#222", colorLight: "#fff", correctLevel: QRCode.CorrectLevel.M });
+  } else {
+    box.classList.add("placeholder");
+    box.innerHTML = "二维码<br>（网站上线后生成）";
+  }
+</script>
+</body>
+</html>

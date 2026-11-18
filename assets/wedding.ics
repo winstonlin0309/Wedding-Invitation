@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Winston & Serena//Wedding Invitation//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:winston-serena-wedding-20261212
+DTSTAMP:20261118T000000Z
+DTSTART:20261213T010000Z
+DTEND:20261213T060000Z
+SUMMARY:Winston & Serena 的婚礼 | Wedding
+LOCATION:2200 E Holt Blvd\, Ontario\, CA 91761
+DESCRIPTION:Winston & Serena 的婚礼庆典，期待您的光临！\nWinston & Serena's wedding celebration. We look forward to seeing you!
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:明天是 Winston & Serena 的婚礼 | Wedding tomorrow
+END:VALARM
+END:VEVENT
+END:VCALENDAR
