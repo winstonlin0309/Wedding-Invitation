@@ -152,7 +152,7 @@ const OPEN_REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)").matche
 // 背景里随机闪烁的金色小星
 (function addSparkles() {
   const box = opening.querySelector(".sparkles");
-  for (let i = 0; i < 22; i++) {
+  for (let i = 0; i < 12; i++) {
     const s = document.createElement("i");
     s.style.left = Math.random() * 100 + "%";
     s.style.top = Math.random() * 100 + "%";
@@ -161,6 +161,47 @@ const OPEN_REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)").matche
     s.style.animationDelay = (Math.random() * 3.6).toFixed(2) + "s";
     s.style.animationDuration = (3.2 + Math.random() * 2.2).toFixed(2) + "s";
     box.append(s);
+  }
+})();
+
+// 飘雪：婚礼在 12 月，开场就是一个冬夜
+// 每片雪两层：外层匀速下落，内层左右摆，两个周期不同步，看起来才像被风吹着飘
+const FLAKE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='1.2' stroke-linecap='round'%3E%3Cpath d='M12 2v20M3.4 7l17.2 10M3.4 17l17.2-10'/%3E%3Cpath d='M12 6.4l-2.4-2.4M12 6.4l2.4-2.4M12 17.6l-2.4 2.4M12 17.6l2.4 2.4'/%3E%3Cpath d='M7.3 9.2L3.7 9M7.3 9.2L5.6 12M16.7 14.8l3.6.2M16.7 14.8l1.7-2.8'/%3E%3Cpath d='M7.3 14.8l-3.6.2M7.3 14.8L5.6 12M16.7 9.2l3.6-.2M16.7 9.2L18.4 12'/%3E%3C/svg%3E";
+
+(function addSnow() {
+  if (OPEN_REDUCE) return;
+  const box = opening.querySelector(".snow");
+  for (let i = 0; i < 34; i++) {
+    const outer = document.createElement("i");
+    const inner = document.createElement("b");
+    // 每 6 片里有 1 片是六角雪花，其余是小圆点，近处的大而糊、远处的小而清
+    const crystal = i % 6 === 0;
+    const size = crystal ? 9 + Math.random() * 7 : 2 + Math.random() * 4;
+    outer.style.left = Math.random() * 100 + "%";
+    outer.style.width = outer.style.height = size.toFixed(1) + "px";
+    outer.style.animationDelay = "-" + (Math.random() * 20).toFixed(1) + "s";
+    const sway = (3.5 + Math.random() * 3.5).toFixed(1);
+    if (crystal) {
+      // 雪花要看得清六个角，所以不做虚化，只放慢、调亮
+      inner.style.backgroundImage = "url(\"" + FLAKE + "\")";
+      inner.classList.add("crystal");
+      outer.style.opacity = (0.5 + Math.random() * 0.3).toFixed(2);
+      outer.style.animationDuration = (15 + Math.random() * 7).toFixed(1) + "s";
+      // 两个动画各自的周期：左右摆 / 自转
+      inner.style.animationDuration = (8 + Math.random() * 6).toFixed(1) + "s, " +
+        (22 + Math.random() * 14).toFixed(0) + "s";
+    } else {
+      // 小圆点：越大越近，近的下落快一点、稍微虚一点，才有景深
+      const near = (size - 2) / 4; // 0 远 → 1 近
+      outer.style.opacity = (0.3 + near * 0.3).toFixed(2);
+      if (near > 0.6) outer.style.filter = "blur(" + ((near - 0.6) * 1.1).toFixed(2) + "px)";
+      outer.style.animationDuration = (17 - near * 5 + Math.random() * 5).toFixed(1) + "s";
+      inner.style.animationDuration = sway + "s";
+    }
+    inner.style.setProperty("--sway", (Math.random() * 46 - 23).toFixed(0) + "px");
+    inner.style.animationDelay = "-" + (Math.random() * 8).toFixed(1) + "s";
+    outer.append(inner);
+    box.append(outer);
   }
 })();
 
