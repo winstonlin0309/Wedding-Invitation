@@ -152,14 +152,14 @@ const OPEN_REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)").matche
 // 背景里随机闪烁的金色小星
 (function addSparkles() {
   const box = opening.querySelector(".sparkles");
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < 14; i++) {
     const s = document.createElement("i");
     s.style.left = Math.random() * 100 + "%";
     s.style.top = Math.random() * 100 + "%";
-    const size = 6 + Math.random() * 10;
+    const size = 5 + Math.random() * 7;
     s.style.width = s.style.height = size + "px";
-    s.style.animationDelay = (Math.random() * 2.8).toFixed(2) + "s";
-    s.style.animationDuration = (2.2 + Math.random() * 1.6).toFixed(2) + "s";
+    s.style.animationDelay = (Math.random() * 3.6).toFixed(2) + "s";
+    s.style.animationDuration = (3.2 + Math.random() * 2.2).toFixed(2) + "s";
     box.append(s);
   }
 })();
@@ -322,7 +322,9 @@ function renderWishes() {
 async function loadWishes() {
   if (!RSVP_ENDPOINT) return renderWishes();
   try {
-    const res = await fetch(RSVP_ENDPOINT + "?action=wishes");
+    // 加时间戳并禁用缓存：微信等内置浏览器会把同一个网址的旧结果缓存下来，
+    // 导致表格里删掉的留言还一直显示在祝福墙上
+    const res = await fetch(RSVP_ENDPOINT + "?action=wishes&t=" + Date.now(), { cache: "no-store" });
     const data = await res.json();
     if (data.ok && Array.isArray(data.wishes)) wishes = data.wishes;
   } catch (e) {}
