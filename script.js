@@ -152,7 +152,7 @@ const OPEN_REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)").matche
 // 背景里随机闪烁的金色小星
 (function addSparkles() {
   const box = opening.querySelector(".sparkles");
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < 22; i++) {
     const s = document.createElement("i");
     s.style.left = Math.random() * 100 + "%";
     s.style.top = Math.random() * 100 + "%";
