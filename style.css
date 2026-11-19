@@ -43,6 +43,24 @@ img.photo { object-fit: cover; }
   .js .fx { opacity: 1; translate: none; transition: none; }
 }
 
+/* 请柬两侧留白区的背景特效：延续开场那个冬夜，雪继续下、星继续闪。
+   fixed 定位所以滚动时留在原地；z-index 低于请柬，雪是从卡片背后飘过去的 */
+.bg-fx { display: none; }
+.bg-fx::before {
+  content: ""; position: absolute; left: 50%; top: 42%;
+  width: 86vw; height: 72vh; border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(58, 90, 142, .4), transparent 70%);
+  animation: bg-drift 38s ease-in-out infinite alternate;
+}
+/* 一团很慢的冷光来回游移，让大片深色不是死的 */
+@keyframes bg-drift {
+  from { transform: translate(-54%, -54%) scale(1); }
+  to { transform: translate(-46%, -44%) scale(1.14); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bg-fx::before { animation: none; transform: translate(-50%, -50%); }
+}
+
 /* 屏幕比请柬宽的时候（平板 / 电脑），周边不能是一块空底色，
    做成同一套墨蓝 + 金暗纹的环境，请柬像一张卡片摆在上面 */
 @media (min-width: 700px) {
@@ -55,7 +73,9 @@ img.photo { object-fit: cover; }
     background-attachment: fixed;
   }
   body { padding: clamp(20px, 3.4vh, 40px) 0; }
+  .bg-fx { display: block; position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
   .stage {
+    z-index: 1;
     border-radius: 16px;
     box-shadow:
       0 0 0 1px rgba(201, 162, 74, .4),

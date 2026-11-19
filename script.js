@@ -150,9 +150,8 @@ const opening = document.getElementById("opening");
 const OPEN_REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // 背景里随机闪烁的金色小星
-(function addSparkles() {
-  const box = opening.querySelector(".sparkles");
-  for (let i = 0; i < 12; i++) {
+function addSparkles(box, count) {
+  for (let i = 0; i < count; i++) {
     const s = document.createElement("i");
     s.style.left = Math.random() * 100 + "%";
     s.style.top = Math.random() * 100 + "%";
@@ -162,16 +161,14 @@ const OPEN_REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)").matche
     s.style.animationDuration = (3.2 + Math.random() * 2.2).toFixed(2) + "s";
     box.append(s);
   }
-})();
+}
 
 // 飘雪：婚礼在 12 月，开场就是一个冬夜
 // 每片雪两层：外层匀速下落，内层左右摆，两个周期不同步，看起来才像被风吹着飘
 const FLAKE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='1.2' stroke-linecap='round'%3E%3Cpath d='M12 2v20M3.4 7l17.2 10M3.4 17l17.2-10'/%3E%3Cpath d='M12 6.4l-2.4-2.4M12 6.4l2.4-2.4M12 17.6l-2.4 2.4M12 17.6l2.4 2.4'/%3E%3Cpath d='M7.3 9.2L3.7 9M7.3 9.2L5.6 12M16.7 14.8l3.6.2M16.7 14.8l1.7-2.8'/%3E%3Cpath d='M7.3 14.8l-3.6.2M7.3 14.8L5.6 12M16.7 9.2l3.6-.2M16.7 9.2L18.4 12'/%3E%3C/svg%3E";
 
-(function addSnow() {
-  if (OPEN_REDUCE) return;
-  const box = opening.querySelector(".snow");
-  for (let i = 0; i < 34; i++) {
+function addSnow(box, count) {
+  for (let i = 0; i < count; i++) {
     const outer = document.createElement("i");
     const inner = document.createElement("b");
     // 每 6 片里有 1 片是六角雪花，其余是小圆点，近处的大而糊、远处的小而清
@@ -203,6 +200,32 @@ const FLAKE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' view
     outer.append(inner);
     box.append(outer);
   }
+}
+
+addSparkles(opening.querySelector(".sparkles"), 12);
+if (!OPEN_REDUCE) addSnow(opening.querySelector(".snow"), 34);
+
+// 拆开信封后，请柬两侧的留白区继续下雪 —— 只有屏幕比请柬宽时才看得到，
+// 所以窄屏不生成这些节点，省掉手机上的开销
+(function backgroundWinter() {
+  const fx = document.querySelector(".bg-fx");
+  if (!fx || OPEN_REDUCE) return;
+  const wide = window.matchMedia("(min-width: 700px)");
+  let built = false;
+  const build = () => {
+    if (built || !wide.matches) return;
+    built = true;
+    const stars = document.createElement("div");
+    stars.className = "sparkles";
+    const snow = document.createElement("div");
+    snow.className = "snow";
+    fx.append(stars, snow);
+    addSparkles(stars, 10);
+    addSnow(snow, 26);
+  };
+  build();
+  // 手机横屏时宽度会越过 700（iPhone 横屏约 844），那时才补上
+  if (!built) wide.addEventListener("change", build);
 })();
 
 // 拆信时飘落的花瓣（粉 / 白 / 金）
