@@ -296,7 +296,7 @@ document.getElementById("add-cal").addEventListener("click", () => {
 // ===== 祝福墙（弹幕） =====
 // 留言做成气泡，分 5 行从右往左循环飘过。留言少（不到 6 条）时同一条最多同时出现 2 次，否则只出现 1 次。
 const wallTrack = document.getElementById("wall-track");
-const LANES = 5;
+const LANES = 7;
 const REDUCE_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let wishes = [];
 let cursor = 0;
@@ -314,6 +314,7 @@ function danmu(w) {
   who.className = "who";
   who.textContent = w.name + (lang === "en" ? ":" : "：");
   const text = document.createElement("span");
+  text.className = "txt";
   text.textContent = w.wish;
   el.append(avatar, who, text);
   return el;
@@ -380,7 +381,7 @@ function renderWishes() {
     return;
   }
   launchDanmu();
-  danmuTimer = setInterval(launchDanmu, 450);
+  danmuTimer = setInterval(launchDanmu, 380);
 }
 
 async function loadWishes() {

@@ -206,8 +206,10 @@ select.field:invalid { color: #8a8a8a !important; }
 }
 .danmu {
   position: absolute; left: 0; display: flex; align-items: center; gap: calc(var(--u) * 6);
-  height: calc(var(--u) * 28); padding: 0 calc(var(--u) * 12) 0 calc(var(--u) * 3);
-  border-radius: calc(var(--u) * 300); white-space: nowrap; will-change: transform;
+  min-height: calc(var(--u) * 28); padding: calc(var(--u) * 3) calc(var(--u) * 12) calc(var(--u) * 3) calc(var(--u) * 3);
+  /* 超长留言折成两行，否则会被拉成一条两千多像素的长带，独占一条轨道半分钟 */
+  max-width: calc(var(--u) * 300); white-space: normal; line-height: 1.35;
+  border-radius: calc(var(--u) * 16); will-change: transform;
   background: rgba(255, 255, 255, .92); color: #333; font-size: calc(var(--u) * 13);
   box-shadow: 0 calc(var(--u) * 2) calc(var(--u) * 8) rgba(90, 130, 180, .18);
 }
@@ -216,7 +218,13 @@ select.field:invalid { color: #8a8a8a !important; }
   display: flex; align-items: center; justify-content: center;
   background: #8fb8e3; color: #fff; font-size: calc(var(--u) * 11); font-weight: bold;
 }
-.danmu .who { font-weight: bold; color: #4a78a8; }
+/* 名字整体不断行，只让祝福正文折行 */
+.danmu .who { font-weight: bold; color: #4a78a8; white-space: nowrap; }
+/* 正文最多两行，超出用省略号。否则一条上百字的留言会折成四五行，
+   气泡高度跨掉两三条轨道，整面墙的排布就乱了 */
+.danmu .txt {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
 .danmu.bride .avatar { background: #f2a3b8; }
 .danmu.bride .who { color: #c45a7a; }
 .danmu.mine { box-shadow: 0 0 0 calc(var(--u) * 1.5) #f2a3b8, 0 calc(var(--u) * 2) calc(var(--u) * 8) rgba(90, 130, 180, .18); }
@@ -226,6 +234,7 @@ select.field:invalid { color: #8a8a8a !important; }
 }
 /* 减少动态效果时：不飘动，改为可滚动的静态列表 */
 .wall-track.static { overflow-y: auto; padding: calc(var(--u) * 10); -webkit-mask: none; mask: none; }
+.wall-track.static .danmu .txt { display: block; overflow: visible; }
 .wall-track.static .danmu { position: static; margin-bottom: calc(var(--u) * 8); width: fit-content; max-width: 100%; white-space: normal; height: auto; min-height: calc(var(--u) * 28); }
 
 
